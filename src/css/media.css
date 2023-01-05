@@ -1,0 +1,11 @@
+@media screen and (max-width: 425px) {
+    .launch-list {
+        flex-grow: 0;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .app {
+        height: auto;
+    }
+}

@@ -1,0 +1,73 @@
+:root {
+  --secondary: gray;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+* {
+  text-align: center;
+  box-sizing: border-box;
+}
+
+a {
+  color: black;
+  text-decoration: none
+}
+
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 25px 0;
+}
+
+.error {
+  color: red !important;
+}
+
+.launch-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-grow: 1;
+}
+
+.logo {
+  animation: 2s fade-in;
+  width: 50%;
+  margin-left: 10%;
+}
+
+.launch-item {
+  animation: 500ms fade-in;
+}
+
+.launch-item__title {
+  font-size: 12px;
+  color: var(--secondary);
+}
+
+.roadster {}
+.roadster__item {
+  margin-right: 5px;
+  color: var(--secondary);
+  font-size: 13px;
+  font-weight: lighter;
+  animation: 500ms fade-in;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

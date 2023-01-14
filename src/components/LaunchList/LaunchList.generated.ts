@@ -6,15 +6,16 @@ import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type GetPastLaunchesQueryVariables = Types.Exact<{
   limit?: Types.InputMaybe<Types.Scalars['Int']>;
+  offset?: Types.InputMaybe<Types.Scalars['Int']>;
 }>;
 
 
-export type GetPastLaunchesQuery = { __typename?: 'Query', launchesPast?: Array<{ __typename?: 'Launch', mission_name?: string | null, launch_date_utc?: any | null, links?: { __typename?: 'LaunchLinks', mission_patch_small?: string | null, wikipedia?: string | null } | null } | null> | null };
+export type GetPastLaunchesQuery = { __typename?: 'Query', launchesPast?: Array<{ __typename?: 'Launch', mission_name?: string | null, launch_date_utc?: any | null, links?: { __typename?: 'LaunchLinks', mission_patch_small?: string | null, video_link?: string | null } | null } | null> | null };
 
 
 export const GetPastLaunchesDocument = gql`
-    query getPastLaunches($limit: Int) {
-  launchesPast(limit: $limit) {
+    query getPastLaunches($limit: Int, $offset: Int) {
+  launchesPast(limit: $limit, offset: $offset) {
     ...LaunchItem
   }
 }
@@ -33,6 +34,7 @@ export const GetPastLaunchesDocument = gql`
  * const { data, loading, error } = useGetPastLaunchesQuery({
  *   variables: {
  *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */

@@ -2,10 +2,24 @@
     .launch-list {
         flex-grow: 0;
     }
+    .logo {
+        width: 80%;
+    }
 }
 
-@media screen and (max-width: 375px) {
-    .app {
-        height: auto;
+@media screen and (min-width: 2560px) {
+    .launch-item__logo {
+        width: 10vw;
+        height: 10vw;
+    }
+    .launch-item__mission-name {
+        max-width: 10vw;
+        font-size: 1vw;
+    }
+    .launch-item__title {
+        font-size: 0.8vw;
+    }
+    .roadster__item {
+        font-size: 1vw;
     }
 }

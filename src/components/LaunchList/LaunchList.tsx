@@ -1,61 +1,52 @@
-import React, {useEffect} from 'react';
-import Lottie from 'react-lottie';
-import * as loadingAnim from '../../assets/99297-loading-files.json'
-import * as errorAnim from '../../assets/90569-error.json'
+import React, {useEffect, useRef} from 'react';
 import {useGetPastLaunchesLazyQuery} from "./LaunchList.generated";
-import dayjs from "dayjs";
-import relativeTime from 'dayjs/plugin/relativeTime'
-import delay from "../../utils/delay";
-import {NetworkStatus} from "@apollo/client";
-import useNetwork from "../../hooks/useNetwork";
 import useRefetch from "../../hooks/useRefetch";
+import LaunchItem from "../LaunchItem/LaunchItem";
+import Loader from "../Loader/Loader";
+import useDragging from "./hooks/useDragging";
+import useScrolling from "./hooks/useScrolling";
 
-dayjs.extend(relativeTime)
 
-const PLACEHOLDER = 'https://rocket-league.com/content/media/items/avatar/220px/5255eafbe61625506763.png'
+export const LAUNCH_LIST_LIMIT = 15
 
 const LaunchList: React.FC<{}> = () => {
-  const [getData, {data, loading, refetch, error}] = useGetPastLaunchesLazyQuery({
+  const [getData, {data, loading, refetch, error, fetchMore}] = useGetPastLaunchesLazyQuery({
     variables: {
-      limit: 4
+      limit: LAUNCH_LIST_LIMIT,
+      offset: 0
     },
   })
 
   useRefetch(error, refetch)
 
   useEffect(() => {
-    const unsub = delay(500, getData)
-    return () => unsub()
+    getData().then(() => console.log('🚀🚀🚀'))
   }, [])
 
-  return <div className={'launch-list'}>{
-    data && data.launchesPast!.map(launch => {
-      const {mission_name, links, launch_date_utc} = launch!;
-      return <a
-        href={links!.wikipedia ?? ''}
-        target={'_blank'}
-        rel="noreferrer"
-        key={mission_name}
-        className={'launch-item'}
-      >
-        <img
-          height={150}
-          width={150}
-          src={links!.mission_patch_small ?? PLACEHOLDER}
-          alt={''}
-        />
-        <p>{mission_name}</p>
-        <p className={'launch-item__title'}>{dayjs(launch_date_utc).fromNow()}</p>
-      </a>
+  const ref = useRef<HTMLDivElement>(null)
+  const dragging = useDragging(ref, `launch-list__wrapper`)
+  const {isScrolledEver, ...scrolling} = useScrolling(ref, loading, () => {
+    fetchMore({
+      variables: {
+        offset: data?.launchesPast?.length,
+        limit: LAUNCH_LIST_LIMIT
+      },
+      updateQuery: (prev, {fetchMoreResult}) => {
+        if(!fetchMoreResult) return prev;
+        // @ts-ignore
+        return {...prev, launchesPast: [...prev.launchesPast, ...fetchMoreResult.launchesPast]}
+      }
     })
-  }
-  {(loading || !data) && <Lottie
-    options={{
-      loop: true,
-      autoplay: true,
-      animationData: loadingAnim
-    }}
-  />}
+  })
+
+  // console.log('render')
+
+  return <div className={'launch-list'}>
+    <div ref={ref} {...dragging} {...scrolling}>
+      {data && data.launchesPast!.map(launch => <LaunchItem key={launch!.mission_name} {...launch} />)
+    }
+    </div>
+    <Loader loading={loading || !data} />
   </div>
 };
 

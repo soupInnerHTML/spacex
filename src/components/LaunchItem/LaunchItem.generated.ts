@@ -1,7 +1,7 @@
 import * as Types from '../../types.generated';
 
 import { gql } from '@apollo/client';
-export type LaunchItemFragment = { __typename?: 'Launch', mission_name?: string | null, launch_date_utc?: any | null, links?: { __typename?: 'LaunchLinks', mission_patch_small?: string | null, wikipedia?: string | null } | null };
+export type LaunchItemFragment = { __typename?: 'Launch', mission_name?: string | null, launch_date_utc?: any | null, links?: { __typename?: 'LaunchLinks', mission_patch_small?: string | null, video_link?: string | null } | null };
 
 export const LaunchItemFragmentDoc = gql`
     fragment LaunchItem on Launch {
@@ -9,7 +9,7 @@ export const LaunchItemFragmentDoc = gql`
   launch_date_utc
   links {
     mission_patch_small
-    wikipedia
+    video_link
   }
 }
     `;

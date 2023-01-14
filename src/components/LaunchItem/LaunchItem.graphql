@@ -3,6 +3,6 @@ fragment LaunchItem on Launch {
     launch_date_utc
     links {
         mission_patch_small
-        wikipedia
+        video_link
     }
 }

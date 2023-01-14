@@ -24,10 +24,11 @@ a {
   align-items: center;
   justify-content: space-around;
   padding: 25px 0;
+  overflow: hidden;
 }
-
-.error {
-  color: red !important;
+.loader {
+  width: 150px;
+  height: 150px;
 }
 
 .launch-list {
@@ -46,7 +47,6 @@ a {
   padding-left: 15%;
 }
 .launch-list_not-dragging {
-  scroll-behavior: smooth;
   cursor: grab;
 }
 .launch-list_dragging {

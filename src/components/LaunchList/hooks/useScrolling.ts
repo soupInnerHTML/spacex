@@ -1,9 +1,10 @@
-import React, {RefObject, useEffect, useState} from "react";
+import {RefObject, UIEventHandler, useEffect, useRef, useState, WheelEventHandler} from "react";
 import delay from "../../../utils/delay";
 import {LAUNCH_LIST_LIMIT} from "../LaunchList";
 
-export default function useScrolling(ref: RefObject<HTMLElement>, loading: boolean, infiniteScrollEffect: () => void) {
+export default function useScrolling(ref: RefObject<HTMLElement>, loading: boolean, infiniteScrollEffect: () => unknown) {
   const [isScrolledEver, setIsScrolledEver] = useState(false)
+  const offset = useRef(0)
 
   useEffect(() => {
     //ux showing of row scroll
@@ -11,10 +12,16 @@ export default function useScrolling(ref: RefObject<HTMLElement>, loading: boole
     if(!loading && !isScrolledEver) {
       const unsub = delay(1000, () => {
         if (row && row.scrollLeft === 0) {
-          row.scrollLeft = row.scrollWidth / LAUNCH_LIST_LIMIT
+          row.scrollTo({
+            left: row.scrollWidth / LAUNCH_LIST_LIMIT,
+            behavior: 'smooth'
+          })
 
           delay(500, () => {
-            row && (row.scrollLeft = 0)
+            row && row.scrollTo({
+              left: 0,
+              behavior: 'smooth'
+            })
           })
 
           console.log('using ux scroll effect in useScrolling hook 🔥')
@@ -25,7 +32,7 @@ export default function useScrolling(ref: RefObject<HTMLElement>, loading: boole
     }
   }, [loading, isScrolledEver])
 
-  const onScroll: React.UIEventHandler<HTMLDivElement> = async () => {
+  const onScroll: UIEventHandler<HTMLElement> = () => {
     if(!isScrolledEver) {
       setIsScrolledEver(true)
     }
@@ -36,5 +43,14 @@ export default function useScrolling(ref: RefObject<HTMLElement>, loading: boole
     }
   }
 
-  return {onScroll, isScrolledEver}
+  const onWheel: WheelEventHandler = (e) => {
+    if(ref.current) {
+      const scrollX = ref.current.scrollLeft + e.deltaY
+      if(scrollX > 0) {
+        ref.current.scrollLeft = scrollX
+      }
+    }
+  }
+
+  return {onScroll, onWheel, isScrolledEver, offset}
 }

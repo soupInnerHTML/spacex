@@ -3,10 +3,12 @@ import placeholder from "../../assets/img/placeholder.webp";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime'
 import {LaunchItemFragment} from "./LaunchItem.generated";
+import ContentLoader from "react-content-loader";
+import Skeleton from "../Skeleton/Skeleton";
 
 dayjs.extend(relativeTime)
 
-const LaunchItem: React.FC<LaunchItemFragment> = ({mission_name, links, launch_date_utc}) => {
+const LaunchItemInner: React.FC<LaunchItemFragment> = ({mission_name, links, launch_date_utc}) => {
   return <div className={'launch-item'}>
     <img
       className={'launch-item__logo'}
@@ -23,4 +25,21 @@ const LaunchItem: React.FC<LaunchItemFragment> = ({mission_name, links, launch_d
   </div>
 };
 
-export default React.memo(LaunchItem);
+const LaunchItem: React.NamedExoticComponent<LaunchItemFragment> & {Placeholder?: React.FC} = React.memo(LaunchItemInner)
+
+LaunchItem.Placeholder = () => {
+  return <div className={'launch-item'}>
+    <ContentLoader
+      className={'launch-item__logo'}
+      backgroundColor="#f3f3f3"
+      foregroundColor="#ecebeb"
+    >
+      <rect x="0" y="0" rx="150" ry="150" width={150} height={150} />
+    </ContentLoader>
+    <Skeleton width={130} height={16} />
+    <Skeleton width={100} height={12} />
+
+  </div>
+}
+
+export {LaunchItem};

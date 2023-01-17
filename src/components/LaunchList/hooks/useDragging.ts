@@ -1,4 +1,4 @@
-import {MouseEventHandler, RefObject, useEffect, useState} from "react";
+import {MouseEventHandler, RefObject, useState} from "react";
 
 type MouseEvent = MouseEventHandler<HTMLElement>
 
@@ -22,6 +22,6 @@ export default function useDragging(ref: RefObject<HTMLElement>, initialClassNam
   }
 
   return {
-    onMouseDown, onMouseUp, onMouseMove, className: `${initialClassName} ${isDragging ? 'launch-list_dragging' : 'launch-list_not-dragging'}`
+    onMouseDown, onMouseUp, onMouseMove, className: `${initialClassName}${isDragging ? ' launch-list__wrapper_dragging' : ''}`
   }
 }

@@ -8,6 +8,7 @@ import useScrolling from "./hooks/useScrolling";
 import {NetworkStatus} from "@apollo/client";
 
 export const LAUNCH_LIST_LIMIT = 15
+const PLACEHOLDER_ARRAY = Array.from({length: LAUNCH_LIST_LIMIT}, (_, key) => <LaunchItem.Placeholder key={key}/>)
 
 const LaunchList: React.FC = () => {
   const [getData, {data, loading, refetch, error, fetchMore, networkStatus}] = useGetPastLaunchesLazyQuery({
@@ -52,10 +53,7 @@ const LaunchList: React.FC = () => {
   return <div className={'launch-list'}>
     <div ref={ref} {...dragging} {...scrolling}>
       {data && data.launchesPast!.map(launch => <LaunchItem key={launch!.mission_name} {...launch} />)}
-      {(networkStatus === NetworkStatus.fetchMore) && (
-        // @ts-ignore
-        Array.from({length: LAUNCH_LIST_LIMIT}, (_, key) => <LaunchItem.Placeholder key={key}/>)
-      )}
+      {networkStatus === NetworkStatus.fetchMore && PLACEHOLDER_ARRAY}
     </div>
     <Loader loading={networkStatus === NetworkStatus.loading || !data} />
   </div>

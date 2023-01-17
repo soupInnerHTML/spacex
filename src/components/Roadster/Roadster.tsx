@@ -1,6 +1,6 @@
 import React from 'react';
 import {useGetRoadsterInfoQuery} from "./Roadster.generated";
-import round from "../../utils/round";
+import round from "../../utils/round/round";
 import useRefetch from "../../hooks/useRefetch";
 import Skeleton from "../Skeleton/Skeleton";
 

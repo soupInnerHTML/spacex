@@ -26,11 +26,6 @@ a {
   padding: 25px 0;
   overflow: hidden;
 }
-.loader {
-  width: 150px;
-  height: 150px;
-}
-
 .launch-list {
   flex-grow: 1;
   justify-content: center;
@@ -45,15 +40,13 @@ a {
   overflow-x: scroll;
   scrollbar-width: none;
   padding-left: 15%;
-}
-.launch-list_not-dragging {
   cursor: grab;
-}
-.launch-list_dragging {
-  cursor: grabbing;
 }
 .launch-list__wrapper::-webkit-scrollbar {
   display: none;
+}
+.launch-list__wrapper_dragging {
+  cursor: grabbing;
 }
 
 .logo {
@@ -89,8 +82,6 @@ a {
 .launch-item__mission-name:hover {
   color: red;
 }
-
-.roadster {}
 .roadster__item {
   margin-right: 5px;
   color: var(--secondary);

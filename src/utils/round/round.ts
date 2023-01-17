@@ -1,3 +1,3 @@
 export default function round (value: number | null | undefined) {
-  return Math.round(value ?? 0)
+  return value ? Math.round(value) : 0
 }

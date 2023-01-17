@@ -25,9 +25,7 @@ const LaunchItemInner: React.FC<LaunchItemFragment> = ({mission_name, links, lau
   </div>
 };
 
-const LaunchItem: React.NamedExoticComponent<LaunchItemFragment> & {Placeholder?: React.FC} = React.memo(LaunchItemInner)
-
-LaunchItem.Placeholder = () => {
+function Placeholder() {
   return <div className={'launch-item'}>
     <ContentLoader
       className={'launch-item__logo'}
@@ -38,8 +36,11 @@ LaunchItem.Placeholder = () => {
     </ContentLoader>
     <Skeleton width={130} height={16} />
     <Skeleton width={100} height={12} />
-
   </div>
 }
+
+const LaunchItem: React.NamedExoticComponent<LaunchItemFragment> & {Placeholder: React.FC} = Object.assign({
+  Placeholder
+}, React.memo(LaunchItemInner))
 
 export {LaunchItem};
